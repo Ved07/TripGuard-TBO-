@@ -1,48 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>TripGuard Result</title>
+    <title>TripGuard - Result</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-<div class="container result-card">
+
+<div class="result-container">
+
     <h1>Journey Analysis</h1>
-    <p>{{ source }} → {{ destination }}</p>
-    <p>{{ date }}</p>
+    <p class="route">{{ source }} → {{ destination }}</p>
+    <p class="date">{{ date }}</p>
 
-    <h2>Risk Score: {{ risk_score }}</h2>
-
-    <p>
-        Risk Level:
-        <span class="risk-{{ risk_level|lower }}">
+    <!-- Risk Card -->
+    <div class="risk-card">
+        <h2>Risk Score</h2>
+        <div class="risk-number">{{ risk_score }}</div>
+        <div class="risk-level {{ risk_level|lower }}">
             {{ risk_level }}
-        </span>
-    </p>
-    <h3>Weather Details</h3>
-
-<div style="display:flex; justify-content:space-between; margin-top:20px;">
-
-    <div>
-        <h4>{{ source }}</h4>
-        <p>🌡 Temp: {{ source_weather.temp }}°C</p>
-        <p>Condition: {{ source_weather.condition }}</p>
-        <img src="http://openweathermap.org/img/wn/{{ source_weather.icon }}@2x.png">
+        </div>
     </div>
 
-    <div>
-        <h4>{{ destination }}</h4>
-        <p>🌡 Temp: {{ destination_weather.temp }}°C</p>
-        <p>Condition: {{ destination_weather.condition }}</p>
-        <img src="http://openweathermap.org/img/wn/{{ destination_weather.icon }}@2x.png">
+    <!-- Weather Section -->
+    <div class="weather-section">
+
+        <div class="weather-card">
+            <h3>{{ source }}</h3>
+            <img src="http://openweathermap.org/img/wn/{{ source_weather.icon }}@2x.png">
+            <p>🌡 {{ source_weather.temp }}°C</p>
+            <p>{{ source_weather.condition }}</p>
+        </div>
+
+        <div class="weather-card">
+            <h3>{{ destination }}</h3>
+            <img src="http://openweathermap.org/img/wn/{{ destination_weather.icon }}@2x.png">
+            <p>🌡 {{ destination_weather.temp }}°C</p>
+            <p>{{ destination_weather.condition }}</p>
+        </div>
+
     </div>
 
-</div>
+    <!-- Recommendation -->
+    <div class="recommendation">
+        <h3>Recommendation</h3>
+        <p>{{ suggestion }}</p>
+    </div>
 
-    <h3>Recommendation</h3>
-    <p>{{ suggestion }}</p>
+    <a href="/" class="back-btn">Analyze Another</a>
 
-    <br>
-    <a href="/"><button>Analyze Another</button></a>
 </div>
 
 </body>

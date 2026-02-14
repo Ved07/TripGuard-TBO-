@@ -1,38 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>TripGuard</title>
+    <title>TripGuard - Smart Travel Risk Predictor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <nav class="navbar">
-    <div class="logo">
-    <span class="plane">✈️</span>
-    TripGuard
-</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">✈ TripGuard</div>
     <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="#">Features</a></li>
-        <li><a href="#">About</a></li>
+        <li>Home</li>
+        <li>Features</li>
+        <li>About</li>
     </ul>
 </nav>
-<div class="container">
-    <h1>TripGuard</h1>
-    <p class="tagline">AI-Powered Travel Risk Intelligence</p>
 
+<!-- HERO SECTION -->
+<section class="hero">
+    <h1>Smart Travel Risk Intelligence</h1>
+    <p>Predict delays. Avoid disruptions. Travel smarter.</p>
+</section>
+
+<!-- SEARCH CARD -->
+<div class="search-card">
     <form action="/analyze" method="POST">
-        <label>From</label>
-        <input type="text" name="source" placeholder="Departure City" required>
-
-        <label>To</label>
-        <input type="text" name="destination" placeholder="Destination City" required>
-
-        <label>Travel Date</label>
-        <input type="date" name="date" required>
-
-        <button type="submit">Analyze Journey</button>
+        <div class="form-group">
+            <input type="text" name="source" placeholder="From (City)" required>
+            <input type="text" name="destination" placeholder="To (City)" required>
+            <input type="date" name="date" required>
+        </div>
+        <button type="submit">Analyze Risk</button>
     </form>
 </div>
+
+<!-- FEATURES -->
+<section class="features">
+    <div class="feature-box">
+        <h3>🌦 Live Weather Data</h3>
+        <p>Real-time weather risk integration.</p>
+    </div>
+
+    <div class="feature-box">
+        <h3>📊 Risk Scoring Engine</h3>
+        <p>AI-based travel disruption prediction.</p>
+    </div>
+
+    <div class="feature-box">
+        <h3>💡 Smart Suggestions</h3>
+        <p>Proactive travel recommendations.</p>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 TripGuard | Built for TBO Hackathon</p>
+</footer>
 
 </body>
 </html>
