@@ -15,7 +15,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 20px 50px;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
 }
 
@@ -59,11 +59,11 @@ body {
 .search-card {
     margin: 40px auto;
     width: 60%;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     padding: 30px;
     border-radius: 15px;
     backdrop-filter: blur(15px);
-    box-shadow: 0px 10px 30px rgba(0,0,0,0.4);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .form-group {
@@ -107,7 +107,7 @@ button:hover {
 .feature-box {
     width: 250px;
     padding: 25px;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     text-align: center;
     backdrop-filter: blur(10px);
@@ -116,14 +116,14 @@ button:hover {
 
 .feature-box:hover {
     transform: translateY(-10px);
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* FOOTER */
 footer {
     text-align: center;
     padding: 20px;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
 }
 
 
@@ -134,11 +134,11 @@ footer {
     max-width: 700px;
     margin: 80px auto;
     padding: 35px 40px;
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 18px;
     backdrop-filter: blur(25px);
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 /*Animation  */
@@ -147,8 +147,13 @@ footer {
 }
 
 @keyframes floatCard {
-    from { transform: translateY(0px); }
-    to { transform: translateY(-8px); }
+    from {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(-8px);
+    }
 }
 
 .route {
@@ -202,7 +207,7 @@ footer {
 .weather-card {
     flex: 1;
     padding: 20px;
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 15px;
     backdrop-filter: blur(15px);
     transition: 0.3s;
@@ -210,13 +215,13 @@ footer {
 
 .weather-card:hover {
     transform: translateY(-5px);
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .recommendation {
     margin-top: 30px;
     padding: 18px;
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 15px;
 }
 
@@ -234,3 +239,94 @@ footer {
 .back-btn:hover {
     background: #0094cc;
 }
+
+/* Circular Risk Styling */
+
+.meter-wrapper {
+    margin: 30px 0;
+}
+
+.circular-meter {
+    --size: 140px;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    font-size: 28px;
+    font-weight: bold;
+    background:
+        conic-gradient(#00c6ff calc(var(--value) * 1%),
+            rgba(255, 255, 255, 0.1) 0);
+    position: relative;
+}
+
+.circular-meter::before {
+    content: "";
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    background: rgba(20, 35, 45, 0.95);
+    border-radius: 50%;
+}
+
+.circular-meter span {
+    position: relative;
+    z-index: 1;
+}
+
+/* Bars Breakdown */
+/* ===== Risk Breakdown Bars ===== */
+
+.breakdown-card {
+    margin-top: 35px;
+    padding: 20px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 15px;
+}
+
+.breakdown-card h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.bar-item {
+    margin-bottom: 18px;
+}
+
+.bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.bar-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: #00c6ff;
+    transition: width 0.6s ease;
+}
+
+/* Width Presets */
+.low-width {
+    width: 25%;
+}
+
+.medium-width {
+    width: 55%;
+}
+
+.high-width {
+    width: 85%;
+}
+

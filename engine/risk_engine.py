@@ -88,13 +88,12 @@ def calculate_risk(source, destination, date):
     else:
         season_risk = season_data["weekday"]
 
-    # Final Weighted Risk
-    total_risk = (
+        total_risk = (
         weather_risk * 0.5 +
         route_risk * 0.4 +
         season_risk * 0.1
     )
-
+    # Total risk is a weighted sum of all factors
     total_risk = round(total_risk, 2)
 
     if total_risk < 20:
@@ -104,4 +103,11 @@ def calculate_risk(source, destination, date):
     else:
         level = "High"
 
-    return total_risk, level, source_weather, destination_weather
+    breakdown = {
+        "weather": round(weather_risk, 2),
+        "route": round(route_risk, 2),
+        "season": round(season_risk, 2)
+    }
+
+    return total_risk, level, source_weather, destination_weather, breakdown
+

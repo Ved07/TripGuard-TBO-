@@ -15,7 +15,7 @@ def analyze():
     date = request.form.get("date")
 
     # Call risk engine
-    risk_score, risk_level, source_weather, destination_weather = calculate_risk(source, destination, date)
+    risk_score, risk_level, source_weather, destination_weather, breakdown = calculate_risk(source, destination, date)
 
     # Call suggestion engine
     suggestion = generate_suggestion(risk_level)
@@ -29,7 +29,8 @@ def analyze():
     risk_level=risk_level,
     suggestion=suggestion,
     source_weather=source_weather,
-    destination_weather=destination_weather
+    destination_weather=destination_weather,
+    breakdown=breakdown
 )
 
 if __name__ == "__main__":
