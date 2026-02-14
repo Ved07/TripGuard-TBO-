@@ -1,0 +1,10 @@
+{
+  "Delhi-Mumbai": 30,
+  "Mumbai-Delhi": 25,
+  "Delhi-Bangalore": 35,
+  "Bangalore-Delhi": 32,
+  "Mumbai-Chennai": 20,
+  "Chennai-Mumbai": 22,
+  "Delhi-Kolkata": 28,
+  "Kolkata-Delhi": 26
+}

@@ -18,6 +18,25 @@
             {{ risk_level }}
         </span>
     </p>
+    <h3>Weather Details</h3>
+
+<div style="display:flex; justify-content:space-between; margin-top:20px;">
+
+    <div>
+        <h4>{{ source }}</h4>
+        <p>🌡 Temp: {{ source_weather.temp }}°C</p>
+        <p>Condition: {{ source_weather.condition }}</p>
+        <img src="http://openweathermap.org/img/wn/{{ source_weather.icon }}@2x.png">
+    </div>
+
+    <div>
+        <h4>{{ destination }}</h4>
+        <p>🌡 Temp: {{ destination_weather.temp }}°C</p>
+        <p>Condition: {{ destination_weather.condition }}</p>
+        <img src="http://openweathermap.org/img/wn/{{ destination_weather.icon }}@2x.png">
+    </div>
+
+</div>
 
     <h3>Recommendation</h3>
     <p>{{ suggestion }}</p>
