@@ -2,18 +2,29 @@
 <html>
 <head>
     <title>TripGuard Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Risk Analysis Result</h1>
+<div class="container result-card">
+    <h1>Journey Analysis</h1>
+    <p>{{ source }} → {{ destination }}</p>
+    <p>{{ date }}</p>
 
-    <p><strong>Route:</strong> {{ source }} → {{ destination }}</p>
-    <p><strong>Date:</strong> {{ date }}</p>
-    <p><strong>Risk Score:</strong> {{ risk_score }}</p>
-    <p><strong>Risk Level:</strong> {{ risk_level }}</p>
+    <h2>Risk Score: {{ risk_score }}</h2>
 
-    <h3>Suggestion:</h3>
+    <p>
+        Risk Level:
+        <span class="risk-{{ risk_level|lower }}">
+            {{ risk_level }}
+        </span>
+    </p>
+
+    <h3>Recommendation</h3>
     <p>{{ suggestion }}</p>
 
-    <a href="/">Analyze Another Trip</a>
+    <br>
+    <a href="/"><button>Analyze Another</button></a>
+</div>
+
 </body>
 </html>

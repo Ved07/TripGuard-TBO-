@@ -2,21 +2,37 @@
 <html>
 <head>
     <title>TripGuard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>TripGuard - Travel Risk Analyzer</h1>
+    <nav class="navbar">
+    <div class="logo">
+    <span class="plane">✈️</span>
+    TripGuard
+</div>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">About</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <h1>TripGuard</h1>
+    <p class="tagline">AI-Powered Travel Risk Intelligence</p>
 
     <form action="/analyze" method="POST">
-        <label>Source:</label>
-        <input type="text" name="source" required><br><br>
+        <label>From</label>
+        <input type="text" name="source" placeholder="Departure City" required>
 
-        <label>Destination:</label>
-        <input type="text" name="destination" required><br><br>
+        <label>To</label>
+        <input type="text" name="destination" placeholder="Destination City" required>
 
-        <label>Date:</label>
-        <input type="date" name="date" required><br><br>
+        <label>Travel Date</label>
+        <input type="date" name="date" required>
 
-        <button type="submit">Analyze Risk</button>
+        <button type="submit">Analyze Journey</button>
     </form>
+</div>
+
 </body>
 </html>
