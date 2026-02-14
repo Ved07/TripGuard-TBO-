@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TripGuard</title>
+</head>
+<body>
+    <h1>TripGuard - Travel Risk Analyzer</h1>
+
+    <form action="/analyze" method="POST">
+        <label>Source:</label>
+        <input type="text" name="source" required><br><br>
+
+        <label>Destination:</label>
+        <input type="text" name="destination" required><br><br>
+
+        <label>Date:</label>
+        <input type="date" name="date" required><br><br>
+
+        <button type="submit">Analyze Risk</button>
+    </form>
+</body>
+</html>

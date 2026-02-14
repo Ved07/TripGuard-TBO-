@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TripGuard Result</title>
+</head>
+<body>
+    <h1>Risk Analysis Result</h1>
+
+    <p><strong>Route:</strong> {{ source }} → {{ destination }}</p>
+    <p><strong>Date:</strong> {{ date }}</p>
+    <p><strong>Risk Score:</strong> {{ risk_score }}</p>
+    <p><strong>Risk Level:</strong> {{ risk_level }}</p>
+
+    <h3>Suggestion:</h3>
+    <p>{{ suggestion }}</p>
+
+    <a href="/">Analyze Another Trip</a>
+</body>
+</html>
