@@ -4,8 +4,16 @@ import numpy as np
 import os
 import json
 from datetime import datetime
+from dotenv import load_dotenv
 
-API_KEY = "75b3d4fa03ed964982c2325e04d0b433"
+# Load environment variables
+load_dotenv()
+
+API_KEY = os.getenv("OPENWEATHER_API_KEY")
+
+if not API_KEY:
+    raise ValueError("OPENWEATHER_API_KEY not found in .env file")
+
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,11 +31,10 @@ def get_weather(city):
             "appid": API_KEY,
             "units": "metric"
         }
-        response = requests.get(BASE_URL, params=params)
-        data = response.json()
 
-        if response.status_code != 200:
-            return None
+        response = requests.get(BASE_URL, params=params, timeout=5)
+        response.raise_for_status()
+        data = response.json()
 
         rainfall = data.get("rain", {}).get("1h", 0)
 
@@ -39,9 +46,10 @@ def get_weather(city):
             "condition": data["weather"][0]["description"],
             "icon": data["weather"][0]["icon"]
         }
-    except:
-        return None
 
+    except Exception as e:
+        print("Weather API Error:", e)
+        return None
 
 # ================= ROUTE =================
 
