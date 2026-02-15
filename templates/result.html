@@ -99,10 +99,20 @@
 
 
         <!-- Recommendation -->
-        <div class="recommendation">
-            <h3>Recommendation</h3>
-            <p>{{ suggestion }}</p>
-        </div>
+       <div class="recommendation">
+    <h3>Recommendations</h3>
+
+    {% if recommendations %}
+        <ul>
+            {% for rec in recommendations %}
+                <li>{{ rec }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No specific recommendations. Travel conditions look stable.</p>
+    {% endif %}
+</div>
+
 
         <a href="/" class="back-btn">Analyze Another</a>
 
