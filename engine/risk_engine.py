@@ -2,27 +2,19 @@ import requests
 import joblib
 import numpy as np
 import os
+import json
+from datetime import datetime
 
-# ==============================
-# 🔐 CONFIGURATION
-# ==============================
-
-API_KEY = "75b3d4fa03ed964982c2325e04d0b433"  # 🔥 Replace with your real API key
+API_KEY = "75b3d4fa03ed964982c2325e04d0b433"
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
-# Get root project directory
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Build correct model path
 MODEL_PATH = os.path.join(BASE_DIR, "model", "risk_model.pkl")
+ROUTE_PATH = os.path.join(BASE_DIR, "data", "routes.json")
 
-# Load model
 model = joblib.load(MODEL_PATH)
 
-
-# ==============================
-# 🌦 WEATHER FETCH FUNCTION
-# ==============================
+# ================= WEATHER =================
 
 def get_weather(city):
     try:
@@ -31,37 +23,70 @@ def get_weather(city):
             "appid": API_KEY,
             "units": "metric"
         }
-
         response = requests.get(BASE_URL, params=params)
         data = response.json()
 
         if response.status_code != 200:
             return None
 
-        # Extract rainfall safely
-        rainfall = 0
-        if "rain" in data:
-            rainfall = data["rain"].get("1h", 0)
+        rainfall = data.get("rain", {}).get("1h", 0)
 
         return {
             "temp": data["main"]["temp"],
             "rainfall": rainfall,
             "wind": data["wind"]["speed"],
-            "visibility": data.get("visibility", 10000) / 1000,  # convert to km
+            "visibility": data.get("visibility", 10000) / 1000,
             "condition": data["weather"][0]["description"],
             "icon": data["weather"][0]["icon"]
         }
-
-    except Exception as e:
-        print("Weather API Error:", e)
+    except:
         return None
 
 
-# ==============================
-# 🤖 ML RISK PREDICTION
-# ==============================
+# ================= ROUTE =================
 
-def predict_risk(features_dict):
+def get_route_data(source, destination):
+    try:
+        with open(ROUTE_PATH) as f:
+            routes = json.load(f)
+
+        key = f"{source.title()}-{destination.title()}"
+        return routes.get(key, {
+            "delay_probability": 50,
+            "congestion_index": 50
+        })
+    except:
+        return {
+            "delay_probability": 50,
+            "congestion_index": 50
+        }
+
+
+# ================= MAIN PIPELINE =================
+
+def calculate_risk(source, destination, date):
+
+    source_weather = get_weather(source)
+    destination_weather = get_weather(destination)
+
+    if not source_weather or not destination_weather:
+        return 0, "Low", {}, {}, {}, []
+
+    route_data = get_route_data(source, destination)
+
+    travel_date = datetime.strptime(date, "%Y-%m-%d")
+
+    features_dict = {
+        "temp": destination_weather["temp"],
+        "rainfall": destination_weather["rainfall"],
+        "wind": destination_weather["wind"],
+        "visibility": destination_weather["visibility"],
+        "delay_prob": route_data["delay_probability"] / 100,   # FIXED SCALE
+        "congestion": route_data["congestion_index"] / 100,    # FIXED SCALE
+        "weekend": 1 if travel_date.weekday() >= 5 else 0,
+        "month": travel_date.month,
+        "festival": 1 if travel_date.month in [10, 11, 12] else 0
+    }
 
     features = np.array([[
         features_dict["temp"],
@@ -76,68 +101,34 @@ def predict_risk(features_dict):
     ]])
 
     prediction = model.predict(features)[0]
+    risk_score = round(max(0, min(prediction, 100)), 2)
 
-    return round(min(prediction, 100), 2)
+    risk_level = "Low" if risk_score < 30 else "Medium" if risk_score < 60 else "High"
 
+    breakdown = {
+        "weather": min(int((features_dict["rainfall"] + features_dict["wind"]) * 2), 100),
+        "route": int((features_dict["delay_prob"] + features_dict["congestion"]) * 50),
+        "season": features_dict["weekend"] * 20
+    }
 
-# ==============================
-# 🎯 RISK LEVEL CLASSIFICATION
-# ==============================
+    recommendations = generate_recommendation(features_dict, risk_score)
 
-def get_risk_level(score):
-
-    if score < 30:
-        return "Low"
-    elif score < 60:
-        return "Medium"
-    else:
-        return "High"
+    return risk_score, risk_level, source_weather, destination_weather, breakdown, recommendations
 
 
-# ==============================
-# 📊 FEATURE IMPORTANCE
-# ==============================
-
-def get_feature_importance():
-
-    importance = model.feature_importances_
-
-    feature_names = [
-        "Temperature",
-        "Rainfall",
-        "Wind Speed",
-        "Visibility",
-        "Route Delay Probability",
-        "Airport Congestion",
-        "Weekend",
-        "Month",
-        "Festival"
-    ]
-
-    sorted_features = sorted(
-        zip(feature_names, importance),
-        key=lambda x: x[1],
-        reverse=True
-    )
-
-    return sorted_features[:3]  # Top 3 contributors
-
-
-# ==============================
-# 💡 SMART RECOMMENDATION ENGINE
-# ==============================
+# ================= RECOMMENDATION =================
 
 def generate_recommendation(features, score):
 
     suggestions = []
 
     if features["rainfall"] > 10:
-        suggestions.append("Heavy rainfall expected. Keep extra buffer time.")
+        suggestions.append("Heavy rainfall expected. Keep buffer time.")
 
-    if features["wind"] > 30:
-        suggestions.append("Strong winds may cause operational delays.")
+    if features["wind"] > 25:
+        suggestions.append("Strong winds may cause delays.")
 
-    if features["congestion"] > 0.7:
+    if features["congestion"] > 0.6:
         suggestions.append("High airport congestion predicted.")
 
     if features["weekend"] == 1:
@@ -147,6 +138,16 @@ def generate_recommendation(features, score):
         suggestions.append("Consider rescheduling travel for lower risk.")
 
     if not suggestions:
-        suggestions.append("Weather and route conditions look stable.")
+        suggestions.append("Travel conditions look stable.")
 
     return suggestions
+
+
+def get_feature_importance():
+    importance = model.feature_importances_
+    feature_names = [
+        "Temperature", "Rainfall", "Wind Speed", "Visibility",
+        "Route Delay", "Congestion", "Weekend", "Month", "Festival"
+    ]
+    return sorted(zip(feature_names, importance),
+                  key=lambda x: x[1], reverse=True)[:3]

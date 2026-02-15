@@ -1,0 +1,50 @@
+{
+  "Delhi-Mumbai": {
+    "delay_probability": 65,
+    "congestion_index": 72
+  },
+  "Mumbai-Delhi": {
+    "delay_probability": 60,
+    "congestion_index": 70
+  },
+  "Delhi-Bangalore": {
+    "delay_probability": 55,
+    "congestion_index": 60
+  },
+  "Bangalore-Delhi": {
+    "delay_probability": 50,
+    "congestion_index": 58
+  },
+  "Mumbai-Bangalore": {
+    "delay_probability": 48,
+    "congestion_index": 55
+  },
+  "Bangalore-Mumbai": {
+    "delay_probability": 45,
+    "congestion_index": 50
+  },
+  "Delhi-Chennai": {
+    "delay_probability": 52,
+    "congestion_index": 57
+  },
+  "Chennai-Delhi": {
+    "delay_probability": 50,
+    "congestion_index": 54
+  },
+  "Mumbai-Chennai": {
+    "delay_probability": 40,
+    "congestion_index": 45
+  },
+  "Hyderabad-Delhi": {
+    "delay_probability": 42,
+    "congestion_index": 48
+  },
+  "Delhi-Kolkata": {
+    "delay_probability": 58,
+    "congestion_index": 62
+  },
+  "Kolkata-Delhi": {
+    "delay_probability": 55,
+    "congestion_index": 60
+  }
+}
